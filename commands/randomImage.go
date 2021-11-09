@@ -27,7 +27,7 @@ func (RandomImageCommand) GetInstance() *discordgo.ApplicationCommand {
 func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordgo.InteractionCreate) {
 	return func(session *discordgo.Session, i *discordgo.InteractionCreate) {
 
-		resp, err := http.Get("https://bentley-tadhg-sh.herokuapp.com/api/random")
+		resp, err := http.Get("https://bentley.tadhg.sh/api/random")
 		if err != nil {
 			fmt.Println("No response from request")
 		}
