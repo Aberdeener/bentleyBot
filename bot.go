@@ -25,15 +25,18 @@ func init() {
 }
 
 var (
-	pingCommand = new(botCommands.PingCommand)
+	pingCommand        = new(botCommands.PingCommand)
+	randomImageCommand = new(botCommands.RandomImageCommand)
 )
 
 var (
 	commands = []*discordgo.ApplicationCommand{
 		pingCommand.GetInstance(),
+		randomImageCommand.GetInstance(),
 	}
 	commandHandlers = map[string]func(session *discordgo.Session, i *discordgo.InteractionCreate){
-		"ping": pingCommand.Handler(),
+		"ping":    pingCommand.Handler(),
+		"bentley": randomImageCommand.Handler(),
 	}
 )
 
@@ -56,7 +59,7 @@ func main() {
 	}
 
 	for _, c := range commands {
-		_, err := bot.ApplicationCommandCreate(bot.State.User.ID, "", c)
+		_, err := bot.ApplicationCommandCreate(bot.State.User.ID, "722118158265090100", c)
 		if err != nil {
 			log.Panicf("Error creating %s command: %v", c.Name, err)
 		}
