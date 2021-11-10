@@ -25,17 +25,14 @@ func init() {
 }
 
 var (
-	pingCommand        = new(botCommands.PingCommand)
 	randomImageCommand = new(botCommands.RandomImageCommand)
 )
 
 var (
 	commands = []*discordgo.ApplicationCommand{
-		pingCommand.GetInstance(),
 		randomImageCommand.GetInstance(),
 	}
 	commandHandlers = map[string]func(session *discordgo.Session, i *discordgo.InteractionCreate){
-		"ping":    pingCommand.Handler(),
 		"bentley": randomImageCommand.Handler(),
 	}
 )

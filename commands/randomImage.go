@@ -13,24 +13,43 @@ type RandomImageCommand struct {
 }
 
 type RandomImageResponse struct {
-	ID  string `json:"id"`
-	URL string `json:"url"`
+	ID    string `json:"id"`
+	URL   string `json:"url"`
+	Error string `json:"error"`
 }
 
 func (RandomImageCommand) GetInstance() *discordgo.ApplicationCommand {
 	return &discordgo.ApplicationCommand{
 		Name:        "bentley",
 		Description: "Show a random photo of Bentley",
+		Options: []*discordgo.ApplicationCommandOption{
+			{
+				Type:        discordgo.ApplicationCommandOptionInteger,
+				Name:        "id",
+				Description: "Photo ID",
+				Required:    false,
+			},
+		},
 	}
 }
 
 func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordgo.InteractionCreate) {
 	return func(session *discordgo.Session, i *discordgo.InteractionCreate) {
 
-		resp, err := http.Get("https://bentley.tadhg.sh/api/random")
+		err := session.ChannelTyping(i.ChannelID)
+
+		var url = "https://bentley.tadhg.sh/api/random"
+
+		if len(i.ApplicationCommandData().Options) > 0 {
+			url = fmt.Sprint("https://bentley.tadhg.sh/api/", i.ApplicationCommandData().Options[0].IntValue())
+		}
+
+		resp, err := http.Get(url)
+
 		if err != nil {
 			fmt.Println("No response from request")
 		}
+
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
 		var result RandomImageResponse
@@ -38,21 +57,30 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 			fmt.Println("Can not unmarshal JSON")
 		}
 
-		err = session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Embeds: []*discordgo.MessageEmbed{
-					{
-						Image: &discordgo.MessageEmbedImage{
-							URL: result.URL,
-						},
-						Footer: &discordgo.MessageEmbedFooter{
-							Text: "ID: " + result.ID,
+		if result.Error != "" {
+			err = session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: result.Error,
+				},
+			})
+		} else {
+			err = session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Embeds: []*discordgo.MessageEmbed{
+						{
+							Image: &discordgo.MessageEmbedImage{
+								URL: result.URL,
+							},
+							Footer: &discordgo.MessageEmbedFooter{
+								Text: "ID: " + result.ID,
+							},
 						},
 					},
 				},
-			},
-		})
+			})
+		}
 
 		if err != nil {
 			panic(err)
