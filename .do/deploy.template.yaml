@@ -1,5 +1,5 @@
 spec:
-  name: bentleyBot
+  name: bentley-bot
   services:
     - name: bot
       git:
