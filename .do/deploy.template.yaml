@@ -1,0 +1,7 @@
+spec:
+  name: bentleyBot
+  services:
+    - name: bentleyBot
+      git:
+        branch: main
+        repo_clone_url: https://github.com/Aberdeener/bentleyBot.git
