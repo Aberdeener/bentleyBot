@@ -53,7 +53,7 @@ func main() {
 	}
 
 	for _, c := range commands {
-		_, err := bot.ApplicationCommandCreate(bot.State.User.ID, "722118158265090100", c)
+		_, err := bot.ApplicationCommandCreate(bot.State.User.ID, "", c)
 		if err != nil {
 			log.Panicf("Error creating %s command: %v", c.Name, err)
 		}
