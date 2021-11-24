@@ -13,7 +13,7 @@ type RandomImageCommand struct {
 }
 
 type RandomImageResponse struct {
-	ID    string `json:"id"`
+	ID    int    `json:"id"`
 	URL   string `json:"url"`
 	Error string `json:"error"`
 }
@@ -21,7 +21,7 @@ type RandomImageResponse struct {
 func (RandomImageCommand) GetInstance() *discordgo.ApplicationCommand {
 	return &discordgo.ApplicationCommand{
 		Name:        "bentley",
-		Description: "Show a random photo of Bentley",
+		Description: "Show a photo of Bentley",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionInteger,
@@ -74,7 +74,7 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 								URL: result.URL,
 							},
 							Footer: &discordgo.MessageEmbedFooter{
-								Text: "ID: " + result.ID,
+								Text: fmt.Sprint("ID: ", result.ID),
 							},
 						},
 					},
