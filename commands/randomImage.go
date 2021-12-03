@@ -15,6 +15,7 @@ type RandomImageCommand struct {
 type RandomImageResponse struct {
 	ID    int    `json:"id"`
 	URL   string `json:"url"`
+	Date  string `json:"date"`
 	Error string `json:"error"`
 }
 
@@ -74,7 +75,7 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 								URL: result.URL,
 							},
 							Footer: &discordgo.MessageEmbedFooter{
-								Text: fmt.Sprint("ID: ", result.ID),
+								Text: fmt.Sprint("ID: ", result.ID, " | Date: ", result.Date),
 							},
 						},
 					},
