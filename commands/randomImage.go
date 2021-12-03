@@ -71,11 +71,12 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 				Data: &discordgo.InteractionResponseData{
 					Embeds: []*discordgo.MessageEmbed{
 						{
+							Timestamp: result.Date,
 							Image: &discordgo.MessageEmbedImage{
 								URL: result.URL,
 							},
 							Footer: &discordgo.MessageEmbedFooter{
-								Text: fmt.Sprint("ID: ", result.ID, " | Date: ", result.Date),
+								Text: fmt.Sprint("ID: ", result.ID),
 							},
 						},
 					},
