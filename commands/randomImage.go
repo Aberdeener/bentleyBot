@@ -15,7 +15,6 @@ type RandomImageCommand struct {
 type RandomImageResponse struct {
 	ID    int    `json:"id"`
 	URL   string `json:"url"`
-	Date  string `json:"date"`
 	Error string `json:"error"`
 }
 
@@ -71,7 +70,6 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 				Data: &discordgo.InteractionResponseData{
 					Embeds: []*discordgo.MessageEmbed{
 						{
-							Timestamp: result.Date,
 							Image: &discordgo.MessageEmbedImage{
 								URL: result.URL,
 							},
