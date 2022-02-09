@@ -44,7 +44,7 @@ func init() {
 
 func main() {
 	bot.AddHandler(func(bot *discordgo.Session, _ *discordgo.Ready) {
-		log.Println("bentleyBot is now running")
+		log.Println("bentleyBot is now running in ", len(bot.State.Guilds), " servers")
 	})
 
 	err := bot.Open()
