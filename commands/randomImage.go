@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -65,8 +66,9 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 				},
 			})
 		} else {
-			print("url", url)
-			print("result url", result.URL)
+			log.Println("------------------------------------")
+			log.Println("request url:", url)
+			log.Println("image url:", result.URL)
 
 			err = session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
