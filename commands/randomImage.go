@@ -66,10 +66,6 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 				},
 			})
 		} else {
-			log.Println("------------------------------------")
-			log.Println("request url:", url)
-			log.Println("image url:", result.URL)
-
 			err = session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
@@ -86,6 +82,16 @@ func (RandomImageCommand) Handler() func(session *discordgo.Session, i *discordg
 				},
 			})
 		}
+
+		log.Println("------------------------------------")
+		guild, err := session.State.Guild(i.GuildID)
+		if err != nil {
+			log.Println("error getting guild:", err)
+		} else {
+			log.Println("guild:", guild.Name)
+		}
+		log.Println("request url:", url)
+		log.Println("image url:", result.URL)
 
 		if err != nil {
 			panic(err)
